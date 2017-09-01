@@ -10,12 +10,11 @@ def getList ( list ):
 def sumpos( list ):
     result = 0
     for x in list:
-        if x < 0 :
+        if x <= 0 :
             continue       
-        elif x ==0:
-            continue
         else:
             result += x
+
     return result
 
 list = getList( list )
