@@ -10,24 +10,24 @@ def getNameFromHtml(html):
 	f.close()
 	return nameList
 
-def filter_html_v1(pat,arrayText,len):
+def filter_html_v1(pat,lists):
 	result = []
-	for i in range(len):
-		match = re.findall(pat,arrayText[i])
+	for list in lists:
+		match = re.findall(pat,list)
 		if(match):
 			result.append(match[0])
 		else:
-			result.append(arrayText[i])
+			result.append(list)
 	return result
 
-def filter_html_v2(pat,arrayText,len):
+def filter_html_v2(pat,lists):
 	result = []
-	for i in range(len):
-		match = re.findall(pat,arrayText[i])
+	for list in lists:
+		match = re.findall(pat,list)
 		if(match):
 			result.append(match[0][1])
 		else:
-			result.append(arrayText[i])
+			result.append(list)
 	return result
 def showList(lists):
 	for list in lists:
@@ -36,11 +36,11 @@ def showList(lists):
 nameList = getNameFromHtml('http://fivedots.coe.psu.ac.th')
 
 pat = "<li>(.*)"
-nameList = filter_html_v1(pat,nameList,len(nameList))
+nameList = filter_html_v1(pat,nameList)
 pat = "(.*) -->"
-nameList = filter_html_v1(pat,nameList,len(nameList))
+nameList = filter_html_v1(pat,nameList)
 pat = '<a href="(.*)">(.*)</a>'
-nameList = filter_html_v2(pat,nameList,len(nameList))
+nameList = filter_html_v2(pat,nameList)
 showList(nameList)
 
 		
