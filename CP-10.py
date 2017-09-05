@@ -1,32 +1,46 @@
 from urllib import request
 import re
 
-f = request.urlopen('http://fivedots.coe.psu.ac.th')
+def getNameFromHtml(html):
+	f = request.urlopen(html)
+	text = f.read().decode('utf-8')
+	line = text.split("\n")
+	nameList = line[32:78]
+	nameList = nameList[2:47]
+	f.close()
+	return nameList
 
-text = f.read().decode('utf-8')
+def filter_html_v1(pat,arrayText,len):
+	result = []
+	for i in range(len):
+		match = re.findall(pat,arrayText[i])
+		if(match):
+			result.append(match[0])
+		else:
+			result.append(arrayText[i])
+	return result
 
-line = text.split("\n")
+def filter_html_v2(pat,arrayText,len):
+	result = []
+	for i in range(len):
+		match = re.findall(pat,arrayText[i])
+		if(match):
+			result.append(match[0][1])
+		else:
+			result.append(arrayText[i])
+	return result
+def showList(lists):
+	for list in lists:
+		print(list)
 
-nameList = line[32:78]
+nameList = getNameFromHtml('http://fivedots.coe.psu.ac.th')
 
-nameList = nameList[2:47]
+pat = "<li>(.*)"
+nameList = filter_html_v1(pat,nameList,len(nameList))
+pat = "(.*) -->"
+nameList = filter_html_v1(pat,nameList,len(nameList))
+pat = '<a href="(.*)">(.*)</a>'
+nameList = filter_html_v2(pat,nameList,len(nameList))
+showList(nameList)
 
-# print(nameList[43])
-
-for i in range(44):
-	print(nameList[i]+"\n")
-
-regList = [None]*44
-
-# print(regList)
-
-for i in range(44):
-	regList[i] = re.search(r"<li>(.*)",nameList[i])
-	print(regList[i].group(1))
-
-
-# regList2 = [None]*44
-
-# for i in range(44):
-# 	regList2[i] = re.search(r"<a>(.*)</a>",regList[i])
-# 	print(regList2[i].group(1))
+		
